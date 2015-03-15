@@ -30,7 +30,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1">
-            <ListBox></ListBox>
+            <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}"/>
         </Grid>
 
     </Grid>

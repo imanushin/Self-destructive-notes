@@ -8,11 +8,14 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SDN.WP.Resources;
+using SDN.WP.Storage;
 
 namespace SDN.WP
 {
     public partial class CreateNote : PhoneApplicationPage
     {
+        private NoteData currentNote = new NoteData();
+
         public CreateNote()
         {
             InitializeComponent();
@@ -39,11 +42,27 @@ namespace SDN.WP
             var deleteButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/delete.png", UriKind.Relative));
             deleteButton.Text = AppResources.RemoveNote;
             ApplicationBar.Buttons.Add(deleteButton);
+            deleteButton.Click += deleteButton_Click;
 
             var saveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/check.png", UriKind.Relative));
             saveButton.Text = AppResources.Save;
             ApplicationBar.Buttons.Add(saveButton);
+            saveButton.Click += saveButton_Click;
         }
 
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            NoteStorage.AddOrUpdateNote(currentNote);
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            NoteStorage.RemoveNote(currentNote.Identity);
+        }
+
+        private void OnLoadedEvent(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView(GetType().Name);
+        }
     }
 }

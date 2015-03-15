@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SDN.WP.Storage
 {
-    internal sealed class NoteData
+    public sealed class NoteData
     {
         public Guid Identity
         {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SDN.WP.Storage
 {
-    internal static class NoteStorage
+    public static class NoteStorage
     {
-        public static ReadOnlyCollection<NoteData> ActualNotes
+        public static ReadOnlyObservableCollection<NoteData> ActualNotes
         {
             get;
             private set;

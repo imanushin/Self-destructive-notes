@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SDN.WP.Storage
 {
-    internal sealed class NoteSnapshot
+    public sealed class NoteSnapshot
     {
         public string Text
         {

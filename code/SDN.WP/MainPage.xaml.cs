@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SDN.WP.Resources;
+using SDN.WP.Storage;
 
 namespace SDN.WP
 {
