@@ -107,6 +107,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Storage\NoteData.cs" />
+    <Compile Include="Storage\NoteSnapshot.cs" />
+    <Compile Include="Storage\NoteStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
