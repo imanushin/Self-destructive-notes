@@ -31,7 +31,18 @@ namespace SDN.WP
             // Create a new button and set the text value to the localized string from AppResources.
             var appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/add.png", UriKind.Relative));
             appBarButton.Text = AppResources.AddNoteIconText;
+            appBarButton.Click += appBarButton_Click;
             ApplicationBar.Buttons.Add(appBarButton);
+        }
+
+        private void appBarButton_Click(object sender, EventArgs e)
+        {
+            CreateNewNote();
+        }
+
+        private void CreateNewNote()
+        {
+            NavigationService.Navigate(new Uri("/EditNote.xaml", UriKind.Relative));
         }
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
