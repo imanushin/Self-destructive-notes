@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using GoogleAnalytics.Core;
 using Yandex.Metrica;
 
 namespace SDN.WP
@@ -12,6 +15,8 @@ namespace SDN.WP
         public static void StartAnalyticAsync()
         {
             YandexMetrica.Start(36342);
+
+            /*99370811*/
         }
     }
 }

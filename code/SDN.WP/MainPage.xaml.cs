@@ -33,5 +33,10 @@ namespace SDN.WP
             appBarButton.Text = AppResources.AddNoteIconText;
             ApplicationBar.Buttons.Add(appBarButton);
         }
+
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView(GetType().Name);
+        }
     }
 }
