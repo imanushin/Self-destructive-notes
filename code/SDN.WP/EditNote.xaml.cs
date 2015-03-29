@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -52,12 +53,12 @@ namespace SDN.WP
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            NoteStorage.AddOrUpdateNote(currentNote);
+            Task.Run(() => NoteStorage.AddOrUpdateNote(currentNote));
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            NoteStorage.RemoveNote(currentNote.Identity);
+            Task.Run(() => NoteStorage.RemoveNote(currentNote.Identity));
         }
 
         private void OnLoadedEvent(object sender, RoutedEventArgs e)
