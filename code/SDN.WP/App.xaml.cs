@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SDN.WP.Resources;
+using SDN.WP.Storage;
 
 namespace SDN.WP
 {
@@ -69,6 +70,7 @@ namespace SDN.WP
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            NoteStorage.UpdateNotes();
         }
 
         // Code to execute when the application is deactivated (sent to background)
