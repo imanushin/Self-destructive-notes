@@ -54,7 +54,6 @@ namespace SDN.WP
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            GoogleAnalytics.EasyTracker.GetTracker().SendView(GetType().Name);
         }
     }
 }

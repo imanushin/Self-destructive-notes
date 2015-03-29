@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using GoogleAnalytics.Core;
 using Yandex.Metrica;
 
 namespace SDN.WP
