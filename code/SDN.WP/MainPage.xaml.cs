@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -14,6 +16,8 @@ namespace SDN.WP
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private readonly ObservableCollection<NoteData> notes = new ObservableCollection<NoteData>(); 
+
         // Constructor
         public MainPage()
         {
@@ -21,6 +25,8 @@ namespace SDN.WP
 
             // Sample code to localize the ApplicationBar
             BuildLocalizedApplicationBar();
+
+            NoteStorage.UpdateNotes();
         }
 
         // Sample code for building a localized ApplicationBar

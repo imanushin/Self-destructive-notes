@@ -35,15 +35,25 @@ namespace SDN.WP.Storage
             private set;
         }
 
-        public byte[] Serilize()
+        public string Serilize()
         {
-            var serializer = new DataContractSerializer(typeof (NoteData));
+            var serializer = new DataContractSerializer(typeof(NoteData));
 
             using (var stream = new MemoryStream())
             {
                 serializer.WriteObject(stream, this);
 
-                return stream.ToArray();
+                return Convert.ToBase64String(stream.ToArray());
+            }
+        }
+
+        public static NoteData Deserialize(string arg)
+        {
+            var serializer = new DataContractSerializer(typeof(NoteData));
+
+            using (var stream = new MemoryStream(Convert.FromBase64String(arg)))
+            {
+                return (NoteData) serializer.ReadObject(stream);
             }
         }
     }
