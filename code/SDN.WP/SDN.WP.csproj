@@ -136,7 +136,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="analytics.xml" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\AppBar\add.png" />
     <Content Include="Assets\AppBar\check.png" />
