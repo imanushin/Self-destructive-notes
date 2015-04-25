@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDN.WP", "SDN.WP\SDN.WP.csproj", "{0C0C30F8-EEA2-407A-93DD-BDDF0763C18F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDN.Shared", "SDN.Shared\SDN.Shared.csproj", "{E968A896-08F5-4532-808A-F369755A294E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,18 +41,6 @@ Global
 		{0C0C30F8-EEA2-407A-93DD-BDDF0763C18F}.Release|x86.ActiveCfg = Release|x86
 		{0C0C30F8-EEA2-407A-93DD-BDDF0763C18F}.Release|x86.Build.0 = Release|x86
 		{0C0C30F8-EEA2-407A-93DD-BDDF0763C18F}.Release|x86.Deploy.0 = Release|x86
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|ARM.ActiveCfg = Release|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E968A896-08F5-4532-808A-F369755A294E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
