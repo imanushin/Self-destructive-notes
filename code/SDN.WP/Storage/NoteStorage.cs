@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Phone.ApplicationModel;
@@ -18,24 +19,15 @@ namespace SDN.WP.Storage
 {
     public static class NoteStorage
     {
-        private static readonly object syncRoot = new object();
+        private static readonly object fileSystemSync = new object();
 
         private static readonly ObservableCollection<NoteData> actualNotes = new ObservableCollection<NoteData>();
 
         private const string dataFolderName = "notes";
 
-        private async static Task<StorageFolder> GetOrCreateNotesFolder()
+        private static async Task ReadAllNotesAsync()
         {
-            var root = ApplicationData.Current.LocalFolder;
-
-            var result = await root.CreateFolderAsync(dataFolderName, CreationCollisionOption.OpenIfExists);
-
-            return result;
-        }
-
-        private static void ReadAllNotes()
-        {
-            var content = GetAllFiles();
+            var content = await Task.Run(() => GetAllFiles());
 
             var notes = new HashSet<NoteData>(content.Select(NoteData.Deserialize));
 
@@ -43,10 +35,11 @@ namespace SDN.WP.Storage
 
             var notesToRemove = notes.Where(n => n.RemoveAtUtc < currentTimeUtc).ToList();
 
-            Task.Run(() => notesToRemove.ForEach(n => RemoveNote(n.Identity)));
+            await Task.Run(() => notesToRemove.ForEach(n => RemoveNote(n.Identity)));
+
             notesToRemove.ForEach(n => notes.Remove(n));
-            
-            Deployment.Current.Dispatcher.BeginInvoke(() => SetNotes(notes));
+
+            await Task.Factory.StartNew(() => SetNotes(notes), new CancellationToken(), TaskCreationOptions.None, App.UiScheduler);
         }
 
         private static void SetNotes(HashSet<NoteData> notes)
@@ -72,7 +65,7 @@ namespace SDN.WP.Storage
 
         private static string[] GetAllFiles()
         {
-            lock (syncRoot)
+            lock (fileSystemSync)
             {
                 using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
                 {
@@ -111,7 +104,7 @@ namespace SDN.WP.Storage
 
         public static void RemoveNote(Guid noteIdentity)
         {
-            lock (syncRoot)
+            lock (fileSystemSync)
             {
                 using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
                 {
@@ -127,9 +120,25 @@ namespace SDN.WP.Storage
             }
         }
 
-        public static void AddOrUpdateNote(NoteData note)
+        public static async Task AddOrUpdateNoteAsync(NoteData note)
         {
-            lock (syncRoot)
+            var saveTask = Task.Run(() => SaveNote(note));
+            var updateCollectionTask = Task.Run(() => ReAddNote(note));
+
+            await Task.WhenAll(saveTask, updateCollectionTask);
+        }
+
+        private static void ReAddNote(NoteData note)
+        {
+            if (!actualNotes.Contains(note))
+            {
+                actualNotes.Add(note);
+            }
+        }
+
+        private static void SaveNote(NoteData note)
+        {
+            lock (fileSystemSync)
             {
                 using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
                 {
@@ -163,9 +172,9 @@ namespace SDN.WP.Storage
             return string.Format("{0}/{1}.note", dataFolderName, noteId);
         }
 
-        public static void UpdateNotes()
+        public static async Task UpdateNotes()
         {
-            Task.Run(() => ReadAllNotes());
+            await ReadAllNotesAsync();
         }
     }
 }

@@ -51,9 +51,9 @@ namespace SDN.WP
             saveButton.Click += saveButton_Click;
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private async void saveButton_Click(object sender, EventArgs e)
         {
-            Task.Run(() => NoteStorage.AddOrUpdateNote(currentNote));
+            await NoteStorage.AddOrUpdateNoteAsync(currentNote);
         }
 
         private void deleteButton_Click(object sender, EventArgs e)

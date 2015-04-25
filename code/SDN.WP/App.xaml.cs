@@ -14,6 +14,8 @@ namespace SDN.WP
 {
     public partial class App : Application
     {
+        internal static TaskScheduler UiScheduler;
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -25,6 +27,8 @@ namespace SDN.WP
         /// </summary>
         public App()
         {
+            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
             // Global handler for uncaught exceptions.
             UnhandledException += Application_UnhandledException;
 
@@ -63,14 +67,18 @@ namespace SDN.WP
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
             Task.Run(() => BackroundTasks.StartAnalyticAsync());
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
-        private void Application_Activated(object sender, ActivatedEventArgs e)
+        private async void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            NoteStorage.UpdateNotes();
+            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+            await NoteStorage.UpdateNotes();
         }
 
         // Code to execute when the application is deactivated (sent to background)
