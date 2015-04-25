@@ -164,7 +164,7 @@ namespace SDN.WP.Storage
 
             var folder = await GetStorageFolderAsync();
 
-            var fileName = GetNoteFileName(note);
+            var fileName = GetNoteFileName(note.Identity);
 
             var targetFile = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
 
@@ -179,14 +179,9 @@ namespace SDN.WP.Storage
             }
         }
 
-        private static string GetNoteFileName(NoteData note)
-        {
-            return GetNoteFileName(note.Identity);
-        }
-
         private static string GetNoteFileName(Guid noteId)
         {
-            return string.Format("{0}/{1}.note", dataFolderName, noteId);
+            return string.Format("{0}.note", noteId);
         }
 
         public static async Task UpdateNotes()
