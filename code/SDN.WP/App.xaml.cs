@@ -113,9 +113,9 @@ namespace SDN.WP
 
 #if DEBUG
             MessageBox.Show(string.Format("Error for {0}: {1}", e.Uri, e.Exception));
-#endif
-
+#else
             await BackroundTasks.ReportErrorAsync(e.Uri.ToString(), string.Empty, e.Exception);
+#endif
         }
 
         // Code to execute on Unhandled Exceptions
