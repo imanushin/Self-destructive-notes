@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SDN.WP
+namespace SDN.Shared
 {
     /// <summary>
     /// Error message types.

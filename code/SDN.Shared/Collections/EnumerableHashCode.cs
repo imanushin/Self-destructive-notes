@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 
-namespace SDN.WP.Collections
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Provides methods for calculating hashcodes of collections.

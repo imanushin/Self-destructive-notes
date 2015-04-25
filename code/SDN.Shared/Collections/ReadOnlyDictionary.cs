@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace SDN.WP.Collections
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Provides the base class for a generic read-only collection.

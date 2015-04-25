@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using SDN.WP.Collections;
 
-namespace SDN.WP
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Provides additional methods for default enumerables.

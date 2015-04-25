@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 
 namespace SDN.WP
 {
-    internal static class Check
+    internal static class UiCheck
     {
         [Conditional("DEBUG")]
         public static void IsUiThread()

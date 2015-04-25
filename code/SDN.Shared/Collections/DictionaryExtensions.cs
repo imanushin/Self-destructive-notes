@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace SDN.WP.Collections
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Provides additional methods for default dictionaries.

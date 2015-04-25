@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace SDN.WP.Collections
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Readonly wrapper for lists.

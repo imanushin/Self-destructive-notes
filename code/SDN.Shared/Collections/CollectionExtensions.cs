@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SDN.WP.Collections
+namespace SDN.Shared.Collections
 {
     /// <summary>
     /// Provides additional methods for the System.Collections.Generic.ICollection interface.

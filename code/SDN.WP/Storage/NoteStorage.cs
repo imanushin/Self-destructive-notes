@@ -29,7 +29,7 @@ namespace SDN.WP.Storage
         {
             var result = new ObservableCollection<NoteData>();
 
-            result.CollectionChanged += (sender, args) => Check.IsUiThread();
+            result.CollectionChanged += (sender, args) => UiCheck.IsUiThread();
 
             return result;
         }
@@ -38,7 +38,7 @@ namespace SDN.WP.Storage
 
         private static async Task ReadAllNotesAsync()
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             var content = await Task.Run(() => GetAllFiles());
 
@@ -57,7 +57,7 @@ namespace SDN.WP.Storage
 
         private static void SetNotes(HashSet<NoteData> notes)
         {
-            Check.IsUiThread();
+            UiCheck.IsUiThread();
 
             var notesToRemove = actualNotes.Except(notes).ToList();
 
@@ -80,7 +80,7 @@ namespace SDN.WP.Storage
 
         private static async Task<string[]> GetAllFiles()
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 
@@ -92,14 +92,14 @@ namespace SDN.WP.Storage
 
             Task.WaitAll(getContentTasks);
 
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             return getContentTasks.Select(t => t.Result).ToArray();
         }
 
         private static async Task<StorageFolder> GetStorageFolderAsync()
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             var storageFolder = ApplicationData.Current.LocalFolder;
 
@@ -108,7 +108,7 @@ namespace SDN.WP.Storage
 
         private static async Task<string> GetFileContent(StorageFile file)
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             using (var fileStream = await file.OpenStreamForReadAsync())
             {
@@ -129,7 +129,7 @@ namespace SDN.WP.Storage
 
         public static async Task RemoveNotesAsync(params Guid[] noteIdentities)
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 
@@ -152,7 +152,7 @@ namespace SDN.WP.Storage
 
         private static void ReAddNote(NoteData note)
         {
-            Check.IsUiThread();
+            UiCheck.IsUiThread();
 
             var indexOfExisting = actualNotes.SkipWhile(n => n.Identity != note.Identity).Count() - 1;
 
@@ -162,7 +162,7 @@ namespace SDN.WP.Storage
             }
             else
             {
-                Check.True(actualNotes[indexOfExisting].Identity == note.Identity, "Trying to replace note {0} to note {1}", actualNotes[indexOfExisting].Identity, note.Identity);
+                UiCheck.True(actualNotes[indexOfExisting].Identity == note.Identity, "Trying to replace note {0} to note {1}", actualNotes[indexOfExisting].Identity, note.Identity);
 
                 actualNotes[indexOfExisting] = note;
             }
@@ -170,7 +170,7 @@ namespace SDN.WP.Storage
 
         private static async Task SaveNoteAsync(NoteData note)
         {
-            Check.IsBackgroundThread();
+            UiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 

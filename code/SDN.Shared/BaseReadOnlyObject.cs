@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
-using SDN.WP.Collections;
+using SDN.Shared.Collections;
 
-namespace SDN.WP
+namespace SDN.Shared
 {
     /// <summary>
     /// Base immutable object. Contains operators and methods for comparison and other basic operations.

@@ -94,7 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackroundTasks.cs" />
-    <Compile Include="Check.cs" />
+    <Compile Include="UiCheck.cs" />
     <Compile Include="EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
     </Compile>
