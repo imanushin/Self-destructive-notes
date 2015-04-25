@@ -154,9 +154,17 @@ namespace SDN.WP.Storage
         {
             Check.IsUiThread();
 
-            if (!actualNotes.Contains(note))
+            var indexOfExisting = actualNotes.SkipWhile(n => n.Identity != note.Identity).Count() - 1;
+
+            if (indexOfExisting + 1 >= actualNotes.Count)
             {
                 actualNotes.Add(note);
+            }
+            else
+            {
+                Check.True(actualNotes[indexOfExisting].Identity == note.Identity, "Trying to replace note {0} to note {1}", actualNotes[indexOfExisting].Identity, note.Identity);
+
+                actualNotes[indexOfExisting] = note;
             }
         }
 

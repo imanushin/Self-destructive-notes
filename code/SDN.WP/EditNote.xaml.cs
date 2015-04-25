@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace SDN.WP
 {
     public partial class CreateNote : PhoneApplicationPage
     {
-        private NoteData currentNote = new NoteData();
+        private NoteData currentNote;
 
         public CreateNote()
         {
@@ -30,6 +31,11 @@ namespace SDN.WP
 
         private void UpdateLiveTime()
         {
+            if (ReferenceEquals(currentNote, null))
+            {
+                return;
+            }
+
             keepAliveUntil.Text = AppResources.KeepAlive + " 1 " + AppResources.Hours + " " + AppResources.Until + " " + DateTime.Now.AddHours(1).ToString("t");
         }
 
@@ -49,6 +55,31 @@ namespace SDN.WP
             saveButton.Text = AppResources.Save;
             ApplicationBar.Buttons.Add(saveButton);
             saveButton.Click += saveButton_Click;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var newNote = e.Content as NoteData;
+
+            if (e.NavigationMode != NavigationMode.New)
+            {
+                return;
+            }
+
+            if (ReferenceEquals(newNote, null))
+            {
+                newNote = NoteData.CreateNew();
+            }
+
+            currentNote = newNote;
+
+            var lastSnapshot = currentNote.Snapshots.Last();
+
+            noteArea.Text = lastSnapshot.Text;
+            UpdateLiveTime();
+            title.Text = lastSnapshot.Title;
         }
 
         private async void saveButton_Click(object sender, EventArgs e)

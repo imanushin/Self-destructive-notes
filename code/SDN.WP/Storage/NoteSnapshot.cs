@@ -9,6 +9,13 @@ namespace SDN.WP.Storage
 {
     public sealed class NoteSnapshot
     {
+        public NoteSnapshot(string text, string title, ReadOnlyCollection<Guid> images)
+        {
+            Text = text;
+            Title = title;
+            Images = images;
+        }
+
         public string Text
         {
             get;
