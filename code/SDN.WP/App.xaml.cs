@@ -110,7 +110,7 @@ namespace SDN.WP
                 // A navigation has failed; break into the debugger
                 Debugger.Break();
             }
-
+            
 #if DEBUG
             MessageBox.Show(string.Format("Error for {0}: {1}", e.Uri, e.Exception));
 #else

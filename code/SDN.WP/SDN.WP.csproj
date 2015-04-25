@@ -94,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackroundTasks.cs" />
+    <Compile Include="Check.cs" />
     <Compile Include="EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
     </Compile>
@@ -107,6 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="StackTraceHelper.cs" />
     <Compile Include="Storage\NoteData.cs" />
     <Compile Include="Storage\NoteSnapshot.cs" />
     <Compile Include="Storage\NoteStorage.cs" />
