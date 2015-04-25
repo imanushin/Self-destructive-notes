@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Resources;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
@@ -9,12 +10,20 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SDN.WP.Resources;
 using SDN.WP.Storage;
+using Yandex.Metrica;
 
 namespace SDN.WP
 {
     public partial class App : Application
     {
-        internal static TaskScheduler UiScheduler;
+        private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+
+        private static TaskScheduler uiScheduler;
+
+        internal static Task CreateInUiThread(Action action)
+        {
+            return Task.Factory.StartNew(action, tokenSource.Token, TaskCreationOptions.None, uiScheduler);
+        }
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -27,7 +36,7 @@ namespace SDN.WP
         /// </summary>
         public App()
         {
-            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
             // Global handler for uncaught exceptions.
             UnhandledException += Application_UnhandledException;
@@ -67,7 +76,7 @@ namespace SDN.WP
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
             Task.Run(() => BackroundTasks.StartAnalyticAsync());
         }
@@ -76,7 +85,7 @@ namespace SDN.WP
         // This code will not execute when the application is first launched
         private async void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            UiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
             await NoteStorage.UpdateNotes();
         }
@@ -94,13 +103,19 @@ namespace SDN.WP
         }
 
         // Code to execute if a navigation fails
-        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        private async void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             if (Debugger.IsAttached)
             {
                 // A navigation has failed; break into the debugger
                 Debugger.Break();
             }
+
+#if DEBUG
+            MessageBox.Show(string.Format("Error for {0}: {1}", e.Uri, e.Exception));
+#endif
+
+            await BackroundTasks.ReportErrorAsync(e.Uri.ToString(), string.Empty, e.Exception);
         }
 
         // Code to execute on Unhandled Exceptions

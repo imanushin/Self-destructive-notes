@@ -21,7 +21,24 @@ namespace SDN.WP.Storage
     {
         private static readonly object fileSystemSync = new object();
 
-        private static readonly ObservableCollection<NoteData> actualNotes = new ObservableCollection<NoteData>();
+        private static readonly ObservableCollection<NoteData> actualNotes = CreateCollection();
+
+        private static ObservableCollection<NoteData> CreateCollection()
+        {
+            var result = new ObservableCollection<NoteData>();
+
+            result.CollectionChanged += (sender, args) => CheckUiThread();
+
+            return result;
+        }
+
+        private static void CheckUiThread()
+        {
+            if (!Deployment.Current.Dispatcher.CheckAccess())
+            {
+                throw new InvalidOperationException("This is not UI thread !!");
+            }
+        }
 
         private const string dataFolderName = "notes";
 
@@ -39,7 +56,7 @@ namespace SDN.WP.Storage
 
             notesToRemove.ForEach(n => notes.Remove(n));
 
-            await Task.Factory.StartNew(() => SetNotes(notes), new CancellationToken(), TaskCreationOptions.None, App.UiScheduler);
+            await App.CreateInUiThread(() => SetNotes(notes));
         }
 
         private static void SetNotes(HashSet<NoteData> notes)
@@ -122,7 +139,7 @@ namespace SDN.WP.Storage
 
         public static async Task AddOrUpdateNoteAsync(NoteData note)
         {
-            var saveTask = Task.Run(() => SaveNote(note));
+            var saveTask = App.CreateInUiThread(() => SaveNote(note));
             var updateCollectionTask = Task.Run(() => ReAddNote(note));
 
             await Task.WhenAll(saveTask, updateCollectionTask);
