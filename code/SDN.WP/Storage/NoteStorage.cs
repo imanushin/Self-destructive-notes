@@ -38,6 +38,8 @@ namespace SDN.WP.Storage
 
         private static async Task ReadAllNotesAsync()
         {
+            Check.IsBackgroundThread();
+
             var content = await Task.Run(() => GetAllFiles());
 
             var notes = new HashSet<NoteData>(content.Select(NoteData.Deserialize));
