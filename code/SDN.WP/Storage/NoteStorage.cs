@@ -9,8 +9,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using Windows.Phone.ApplicationModel;
 using Windows.Storage;
+using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using Microsoft.Phone.Reactive;
 using Buffer = Windows.Storage.Streams.Buffer;
@@ -27,17 +29,9 @@ namespace SDN.WP.Storage
         {
             var result = new ObservableCollection<NoteData>();
 
-            result.CollectionChanged += (sender, args) => CheckUiThread();
+            result.CollectionChanged += (sender, args) => Check.IsUiThread();
 
             return result;
-        }
-
-        private static void CheckUiThread()
-        {
-            if (!Deployment.Current.Dispatcher.CheckAccess())
-            {
-                throw new InvalidOperationException("This is not UI thread !!");
-            }
         }
 
         private const string dataFolderName = "notes";
@@ -52,7 +46,7 @@ namespace SDN.WP.Storage
 
             var notesToRemove = notes.Where(n => n.RemoveAtUtc < currentTimeUtc).ToList();
 
-            await Task.Run(() => notesToRemove.ForEach(n => RemoveNote(n.Identity)));
+            await RemoveNotesAsync(notesToRemove.Select(n => n.Identity).ToArray());
 
             notesToRemove.ForEach(n => notes.Remove(n));
 
@@ -61,6 +55,8 @@ namespace SDN.WP.Storage
 
         private static void SetNotes(HashSet<NoteData> notes)
         {
+            Check.IsUiThread();
+
             var notesToRemove = actualNotes.Except(notes).ToList();
 
             notesToRemove.ForEach(n => actualNotes.Remove(n));
@@ -80,33 +76,43 @@ namespace SDN.WP.Storage
             }
         }
 
-        private static string[] GetAllFiles()
+        private static async Task<string[]> GetAllFiles()
         {
-            lock (fileSystemSync)
+            Check.IsBackgroundThread();
+
+            var folder = await GetStorageFolderAsync();
+
+            var allFiles = await folder.GetFilesAsync();
+
+            var notesFiles = allFiles.Where(f => f.Name.EndsWith(".note", StringComparison.OrdinalIgnoreCase)).ToArray();
+
+            var getContentTasks = notesFiles.Select(GetFileContent).ToArray();
+
+            Task.WaitAll(getContentTasks);
+
+            Check.IsBackgroundThread();
+
+            return getContentTasks.Select(t => t.Result).ToArray();
+        }
+
+        private static async Task<StorageFolder> GetStorageFolderAsync()
+        {
+            Check.IsBackgroundThread();
+
+            var storageFolder = ApplicationData.Current.LocalFolder;
+
+            return await storageFolder.CreateFolderAsync(dataFolderName, CreationCollisionOption.OpenIfExists);
+        }
+
+        private static async Task<string> GetFileContent(StorageFile file)
+        {
+            Check.IsBackgroundThread();
+
+            using (var fileStream = await file.OpenStreamForReadAsync())
             {
-                using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var streamReader = new StreamReader(fileStream))
                 {
-                    if (!isolatedFile.DirectoryExists(dataFolderName))
-                    {
-                        isolatedFile.CreateDirectory(dataFolderName);
-                    }
-
-                    var fileNames = isolatedFile.GetFileNames(dataFolderName + "/*.note");
-
-                    var files = new List<string>();
-
-                    foreach (var fileName in fileNames)
-                    {
-                        using (var file = isolatedFile.OpenFile(fileName, FileMode.Open))
-                        {
-                            using (var reader = new StreamReader(file))
-                            {
-                                files.Add(reader.ReadToEnd());
-                            }
-                        }
-                    }
-
-                    return files.ToArray();
+                    return streamReader.ReadToEnd();
                 }
             }
         }
@@ -119,62 +125,56 @@ namespace SDN.WP.Storage
             }
         }
 
-        public static void RemoveNote(Guid noteIdentity)
+        public static async Task RemoveNotesAsync(params Guid[] noteIdentities)
         {
-            lock (fileSystemSync)
-            {
-                using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    var fileName = GetNoteFileName(noteIdentity);
+            Check.IsBackgroundThread();
 
-                    if (!isolatedFile.FileExists(fileName))
-                    {
-                        return;
-                    }
+            var folder = await GetStorageFolderAsync();
 
-                    isolatedFile.DeleteFile(fileName);
-                }
-            }
+            var allFiles = await folder.GetFilesAsync();
+
+            var names = new HashSet<string>(noteIdentities.Select(GetNoteFileName));
+
+            var filesToRemove = allFiles.Where(f => names.Contains(f.Name)).ToArray();
+
+            await Task.WhenAll(filesToRemove.Select(f => f.DeleteAsync().AsTask()).ToArray());
         }
 
         public static async Task AddOrUpdateNoteAsync(NoteData note)
         {
-            var saveTask = App.CreateInUiThread(() => SaveNote(note));
-            var updateCollectionTask = Task.Run(() => ReAddNote(note));
+            var saveTask = Task.Run(() => SaveNoteAsync(note));
+            var updateCollectionTask = App.CreateInUiThread(() => ReAddNote(note));
 
             await Task.WhenAll(saveTask, updateCollectionTask);
         }
 
         private static void ReAddNote(NoteData note)
         {
+            Check.IsUiThread();
+
             if (!actualNotes.Contains(note))
             {
                 actualNotes.Add(note);
             }
         }
 
-        private static void SaveNote(NoteData note)
+        private static async Task SaveNoteAsync(NoteData note)
         {
-            lock (fileSystemSync)
+            Check.IsBackgroundThread();
+
+            var folder = await GetStorageFolderAsync();
+
+            var fileName = GetNoteFileName(note);
+
+            var targetFile = await folder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+
+            using (var writeStream = await targetFile.OpenStreamForWriteAsync())
             {
-                using (var isolatedFile = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var writer = new StreamWriter(writeStream))
                 {
-                    if (!isolatedFile.DirectoryExists(dataFolderName))
-                    {
-                        isolatedFile.CreateDirectory(dataFolderName);
-                    }
-
-                    var fileName = GetNoteFileName(note);
-
                     var serializedNote = note.Serilize();
 
-                    using (var stream = isolatedFile.OpenFile(fileName, FileMode.Create))
-                    {
-                        using (var writer = new StreamWriter(stream))
-                        {
-                            writer.Write(serializedNote);
-                        }
-                    }
+                    writer.Write(serializedNote);
                 }
             }
         }

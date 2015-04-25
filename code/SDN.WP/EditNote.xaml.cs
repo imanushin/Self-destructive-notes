@@ -56,9 +56,9 @@ namespace SDN.WP
             await NoteStorage.AddOrUpdateNoteAsync(currentNote);
         }
 
-        private void deleteButton_Click(object sender, EventArgs e)
+        private async void deleteButton_Click(object sender, EventArgs e)
         {
-            Task.Run(() => NoteStorage.RemoveNote(currentNote.Identity));
+            await NoteStorage.RemoveNotesAsync(currentNote.Identity);
         }
 
         private void OnLoadedEvent(object sender, RoutedEventArgs e)
