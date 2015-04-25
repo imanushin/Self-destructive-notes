@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDN.WP", "SDN.WP\SDN.WP.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDN.WP.UnitTests", "SDN.WP.UnitTests\SDN.WP.UnitTests.csproj", "{2F0075FA-F3A6-492E-8441-B5208BBB911E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDN.Shared", "SDN.Shared\SDN.Shared.csproj", "{B8BE07F1-8589-4660-8329-ECABAC51EE40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,18 @@ Global
 		{2F0075FA-F3A6-492E-8441-B5208BBB911E}.Release|x86.ActiveCfg = Release|x86
 		{2F0075FA-F3A6-492E-8441-B5208BBB911E}.Release|x86.Build.0 = Release|x86
 		{2F0075FA-F3A6-492E-8441-B5208BBB911E}.Release|x86.Deploy.0 = Release|x86
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B8BE07F1-8589-4660-8329-ECABAC51EE40}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
