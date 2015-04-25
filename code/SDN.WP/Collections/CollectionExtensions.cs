@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SDN.WP;
 
-namespace Deltacorvi.PortableCommon.Collections
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides additional methods for the System.Collections.Generic.ICollection interface.

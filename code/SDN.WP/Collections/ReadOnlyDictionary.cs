@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Threading;
-using Deltacorvi.PortableCommon.Equality;
-using SDN.WP;
 
-namespace Deltacorvi.PortableCommon.Collections
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides the base class for a generic read-only collection.

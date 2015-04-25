@@ -1,6 +1,6 @@
 ﻿using SDN.WP.Resources;
 
-namespace SDN.WP
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides access to string resources.

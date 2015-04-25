@@ -5,10 +5,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
-using Deltacorvi.PortableCommon.Equality;
-using SDN.WP;
 
-namespace Deltacorvi.PortableCommon.Collections
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Readonly wrapper for sets.

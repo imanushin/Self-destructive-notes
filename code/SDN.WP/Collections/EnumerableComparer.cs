@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Deltacorvi.PortableCommon.Equality
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides methods for comparing collections. 

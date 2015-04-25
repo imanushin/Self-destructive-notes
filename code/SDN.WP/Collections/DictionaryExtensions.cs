@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using SDN.WP;
 
-namespace Deltacorvi.PortableCommon.Collections
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides additional methods for default dictionaries.

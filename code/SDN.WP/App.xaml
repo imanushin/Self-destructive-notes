@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:storage="clr-namespace:SDN.WP.Storage">
+    xmlns:storage="clr-namespace:SDN.WP.Storage"
+    xmlns:collections="clr-namespace:SDN.WP.Collections">
 
     <!--Application Resources-->
     <Application.Resources>
-        <local:LocalizedStrings xmlns:local="clr-namespace:SDN.WP" x:Key="LocalizedStrings"/>
+        <collections:LocalizedStrings xmlns:local="clr-namespace:SDN.WP" x:Key="LocalizedStrings"/>
         <storage:XamlNoteStorage xmlns:storage="clr-namespace:SDN.WP.Storage" x:Key="NoteStorage"/>
     </Application.Resources>
 

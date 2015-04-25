@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using SDN.WP;
+using SDN.WP.Collections;
 
-namespace Deltacorvi.PortableCommon.Collections
+namespace SDN.WP
 {
     /// <summary>
     /// Provides additional methods for default enumerables.

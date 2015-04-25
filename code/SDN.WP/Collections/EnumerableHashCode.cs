@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
-using SDN.WP;
 
-namespace Deltacorvi.PortableCommon.Equality
+namespace SDN.WP.Collections
 {
     /// <summary>
     /// Provides methods for calculating hashcodes of collections.

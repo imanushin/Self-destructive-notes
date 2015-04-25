@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
-using Deltacorvi.PortableCommon.Collections;
+using SDN.WP.Collections;
 
-namespace Deltacorvi.PortableCommon
+namespace SDN.WP
 {
     /// <summary>
     /// Base immutable object. Contains operators and methods for comparison and other basic operations.
