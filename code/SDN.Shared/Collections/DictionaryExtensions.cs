@@ -14,12 +14,12 @@ namespace SDN.Shared.Collections
         /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
         /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
         /// <param name="currentDictionary">The current dictionary.</param>
-        /// <returns>A ReadOnlyDictionary that acts as a read-only wrapper around the current dictionary.</returns>
-        public static ReadOnlyDictionary<TKey, TValue> ToReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> currentDictionary)
+        /// <returns>A ImmutableDictionary that acts as a read-only wrapper around the current dictionary.</returns>
+        public static ImmutableDictionary<TKey, TValue> ToReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> currentDictionary)
         {
-            var result = currentDictionary as ReadOnlyDictionary<TKey, TValue>;
+            var result = currentDictionary as ImmutableDictionary<TKey, TValue>;
 
-            return result ?? new ReadOnlyDictionary<TKey, TValue>(currentDictionary);
+            return result ?? new ImmutableDictionary<TKey, TValue>(currentDictionary);
         }
 
         /// <summary>

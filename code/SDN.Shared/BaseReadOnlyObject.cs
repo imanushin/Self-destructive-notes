@@ -17,7 +17,7 @@ namespace SDN.Shared
 
         private string description;
 
-        private ReadOnlyList<object> innerObjects;
+        private ImmutableList<object> innerObjects;
 
         /// <summary>
         /// Returns true if objects are equal.

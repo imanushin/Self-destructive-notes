@@ -15,12 +15,12 @@ namespace SDN.Shared.Collections
         /// </summary>
         /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
         /// <param name="source">The current enumerable.</param>
-        /// <returns>ReadOnlyList that contains the same elements as the current enumerable.</returns>
-        public static ReadOnlyList<T> ToReadOnlyList<T>(this IEnumerable<T> source)
+        /// <returns>ImmutableList that contains the same elements as the current enumerable.</returns>
+        public static ImmutableList<T> ToReadOnlyList<T>(this IEnumerable<T> source)
         {
             Check.ObjectIsNotNull(source, "source");
 
-            return new ReadOnlyList<T>(source);
+            return new ImmutableList<T>(source);
         }
 
         /// <summary>
@@ -48,16 +48,16 @@ namespace SDN.Shared.Collections
         }
 
         /// <summary>
-        /// Создает ReadOnlySet для коллекции, которая не является им.
+        /// Создает ImmutableSet для коллекции, которая не является им.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
         /// <param name="source">The current enumerable.</param>
-        /// <returns>A ReadOnlySet instance that contains same elements as the specified enumerable.</returns>
-        public static ReadOnlySet<T> ToReadOnlySet<T>(this IEnumerable<T> source)
+        /// <returns>A ImmutableSet instance that contains same elements as the specified enumerable.</returns>
+        public static ImmutableSet<T> ToReadOnlySet<T>(this IEnumerable<T> source)
         {
             Check.ObjectIsNotNull(source, "source");
 
-            return (source as ReadOnlySet<T>) ?? new ReadOnlySet<T>(source);
+            return (source as ImmutableSet<T>) ?? new ImmutableSet<T>(source);
         }
 
 
@@ -72,7 +72,7 @@ namespace SDN.Shared.Collections
             Check.ObjectIsNotNull(source, "source");
             Check.ObjectIsNotNull(other, "other");
 
-            ReadOnlySet<T> otherSet = other.ToReadOnlySet();
+            ImmutableSet<T> otherSet = other.ToReadOnlySet();
 
             return source.Where(item => !otherSet.Contains(item));
         }
@@ -112,8 +112,8 @@ namespace SDN.Shared.Collections
         /// <param name="source">The current collection.</param>
         /// <param name="keySelector">Key converter.</param>
         /// <param name="valueSelector">Value converter.</param>
-        /// <returns>A ReadOnlyDictionary that acts as a read-only wrapper around the current dictionary.</returns>
-        public static ReadOnlyDictionary<TKey, TValue> ToReadOnlyDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector)
+        /// <returns>A ImmutableDictionary that acts as a read-only wrapper around the current dictionary.</returns>
+        public static ImmutableDictionary<TKey, TValue> ToReadOnlyDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector)
         {
             Check.ObjectIsNotNull(source, "source");
             Check.ObjectIsNotNull(keySelector, "keySelector");

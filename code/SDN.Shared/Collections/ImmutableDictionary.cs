@@ -13,19 +13,19 @@ namespace SDN.Shared.Collections
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     [DataContract(IsReference = true)]
-    public sealed class ReadOnlyDictionary<TKey, TValue> : BaseReadOnlyObject, IDictionary<TKey, TValue>, IDictionary
+    public sealed class ImmutableDictionary<TKey, TValue> : BaseReadOnlyObject, IDictionary<TKey, TValue>, IDictionary
     {
         private const string notSupportedMessage = "Collection is read-only and can not be modified.";
 
         #region Empty
 
-        private static readonly ReadOnlyDictionary<TKey, TValue> empty = new ReadOnlyDictionary<TKey, TValue>(new Dictionary<TKey, TValue>());
+        private static readonly ImmutableDictionary<TKey, TValue> empty = new ImmutableDictionary<TKey, TValue>(new Dictionary<TKey, TValue>());
 
         /// <summary>
         /// Empty collection.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-        public static ReadOnlyDictionary<TKey, TValue> Empty
+        public static ImmutableDictionary<TKey, TValue> Empty
         {
             get
             {
@@ -41,10 +41,10 @@ namespace SDN.Shared.Collections
         private object synchronization;
 
         /// <summary>
-        /// Initializes a new instance of the ReadOnlyDictionary class that is a read-only wrapper around the specified dictionary.
+        /// Initializes a new instance of the ImmutableDictionary class that is a read-only wrapper around the specified dictionary.
         /// </summary>
         /// <param name="dictionary">The dictionary to wrap.</param>
-        public ReadOnlyDictionary(IDictionary<TKey, TValue> dictionary)
+        public ImmutableDictionary(IDictionary<TKey, TValue> dictionary)
         {
             Check.ObjectIsNotNull(dictionary, "dictionary");
 
@@ -314,7 +314,7 @@ namespace SDN.Shared.Collections
         /// </summary>
         protected override bool CheckEquality(BaseReadOnlyObject target)
         {
-            return EnumerableComparer.Compare((IDictionary)this, (ReadOnlyDictionary<TKey, TValue>)target);
+            return EnumerableComparer.Compare((IDictionary)this, (ImmutableDictionary<TKey, TValue>)target);
         }
 
         /// <summary>

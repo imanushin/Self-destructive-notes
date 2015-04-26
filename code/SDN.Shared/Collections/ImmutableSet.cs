@@ -15,19 +15,19 @@ namespace SDN.Shared.Collections
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     [DataContract(IsReference = true)]
     [DebuggerDisplay("Count = {Count}")]
-    public sealed class ReadOnlySet<T> : BaseReadOnlyObject, ICollection<T>, IReadOnlyCollection<T>
+    public sealed class ImmutableSet<T> : BaseReadOnlyObject, ICollection<T>, IReadOnlyCollection<T>
     {
         private const string notSupportedMessage = "Collection is read-only and can not be modified.";
 
         #region Empty
 
-        private static readonly ReadOnlySet<T> empty = new ReadOnlySet<T>(new T[0]);
+        private static readonly ImmutableSet<T> empty = new ImmutableSet<T>(new T[0]);
 
         /// <summary>
         /// Пустая коллекция. Для разных <typeparamref name="T"/> выдаются разные объекты, для одинаковых <typeparamref name="T"/> всегда выдается один и тот же объект 
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-        public static ReadOnlySet<T> Empty
+        public static ImmutableSet<T> Empty
         {
             get
             {
@@ -64,10 +64,10 @@ namespace SDN.Shared.Collections
         }
 
         /// <summary>
-        /// Creates an instance of ReadOnlySet class.
+        /// Creates an instance of ImmutableSet class.
         /// </summary>
         /// <param name="collection">Base set that should be wrapped.</param>
-        public ReadOnlySet(IEnumerable<T> collection)
+        public ImmutableSet(IEnumerable<T> collection)
         {
             Check.ObjectIsNotNull(collection, "collection");
 
@@ -167,7 +167,7 @@ namespace SDN.Shared.Collections
         /// </summary>
         protected override bool CheckEquality(BaseReadOnlyObject target)
         {
-            return EnumerableComparer.Compare(this, (ReadOnlySet<T>)target);
+            return EnumerableComparer.Compare(this, (ImmutableSet<T>)target);
         }
 
         /// <summary>
@@ -186,13 +186,13 @@ namespace SDN.Shared.Collections
         protected override string GetString()
         {
             if (Count == 0)
-                return string.Format("ReadOnlySet<{0}>, 0 elements", typeof(T).Name);
+                return string.Format("ImmutableSet<{0}>, 0 elements", typeof(T).Name);
 
             List<T> items = this.ToList();
 
             items.Sort((left, right) => string.CompareOrdinal(left.ToString(), right.ToString()));
 
-            string result = string.Format("ReadOnlySet<{0}>, {1} elements:\r\n  {2}", typeof(T).Name, Count, string.Join("\r\n  ", items.Select(item => item.ToString()).ToArray()));
+            string result = string.Format("ImmutableSet<{0}>, {1} elements:\r\n  {2}", typeof(T).Name, Count, string.Join("\r\n  ", items.Select(item => item.ToString()).ToArray()));
 
             return result.Replace("\r\n", "\r\n  ");
         }

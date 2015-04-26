@@ -16,19 +16,19 @@ namespace SDN.Shared.Collections
     [DebuggerDisplay("Count = {Count}")]
     [DataContract(IsReference = true)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    public sealed class ReadOnlyList<T> : BaseReadOnlyObject, IList<T>, IList, IReadOnlyCollection<T>
+    public sealed class ImmutableList<T> : BaseReadOnlyObject, IList<T>, IList, IReadOnlyCollection<T>
     {
         private const string notSupportedMessage = "Collection is read-only and can not be modified.";
 
         #region Empty
 
-        private static readonly ReadOnlyList<T> empty = new ReadOnlyList<T>(new T[0]);
+        private static readonly ImmutableList<T> empty = new ImmutableList<T>(new T[0]);
 
         /// <summary>
         /// Empty collection.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
-        public static ReadOnlyList<T> Empty
+        public static ImmutableList<T> Empty
         {
             get
             {
@@ -55,10 +55,10 @@ namespace SDN.Shared.Collections
         }
 
         /// <summary>
-        /// Creates an instance of ReadOnlyList class.
+        /// Creates an instance of ImmutableList class.
         /// </summary>
         /// <param name="collection">Base set that should be wrapped.</param>
-        public ReadOnlyList(IEnumerable<T> collection)
+        public ImmutableList(IEnumerable<T> collection)
         {
             Check.ObjectIsNotNull(collection, "collection");
 
@@ -282,7 +282,7 @@ namespace SDN.Shared.Collections
         /// </summary>
         protected override bool CheckEquality(BaseReadOnlyObject target)
         {
-            return EnumerableComparer.Compare(this, (ReadOnlyList<T>)target);
+            return EnumerableComparer.Compare(this, (ImmutableList<T>)target);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace SDN.Shared.Collections
         /// <returns></returns>
         protected override string GetString()
         {
-            return string.Format("ReadOnlyList<{0}>: {1}", typeof(T).Name, string.Join(", ", this.Select(item => item.ToString()).ToArray()));
+            return string.Format("ImmutableList<{0}>: {1}", typeof(T).Name, string.Join(", ", this.Select(item => item.ToString()).ToArray()));
         }
     }
 }
