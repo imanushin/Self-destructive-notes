@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using SDN.Shared.Collections;
 
-namespace Deltacorvi.NetCommon.Tests.Collections
+namespace SDN.Shared.UnitTests
 {
     [TestFixture]
     public sealed class EnumerableExtensionsTest

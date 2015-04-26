@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Deltacorvi.NetCommon;
 using NUnit.Framework;
 using SDN.Shared.Collections;
 
-namespace Deltacorvi.NetCommon.Tests.Collections
+namespace SDN.Shared.UnitTests
 {
 // ReSharper disable InvokeAsExtensionMethod
     [TestFixture]
