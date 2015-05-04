@@ -22,6 +22,10 @@
             <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Vertical">
+            <ProgressBar IsIndeterminate="True" Name="saveProgressBar" Visibility="Collapsed"/>
+        </StackPanel>
 
         <StackPanel Orientation="Vertical">
             <TextBlock Margin="10,0" Name="titleTextBlock"/>

@@ -111,6 +111,7 @@
     <Compile Include="StackTraceHelper.cs" />
     <Compile Include="Storage\NoteStorage.cs" />
     <Compile Include="Storage\XamlNoteStorage.cs" />
+    <Compile Include="UiExceptionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

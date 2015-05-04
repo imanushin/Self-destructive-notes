@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using JetBrains.Annotations;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SDN.Shared.Business;
@@ -17,6 +18,7 @@ namespace SDN.WP
 {
     public partial class CreateNote : PhoneApplicationPage
     {
+        [CanBeNull]
         private NoteData currentNote;
 
         public CreateNote()
@@ -76,7 +78,7 @@ namespace SDN.WP
 
             currentNote = newNote;
 
-            var lastSnapshot = currentNote.Snapshots.Last();
+            var lastSnapshot = newNote.Snapshots.Last();
 
             noteArea.Text = lastSnapshot.Text;
             UpdateLiveTime();
@@ -85,11 +87,22 @@ namespace SDN.WP
 
         private async void saveButton_Click(object sender, EventArgs e)
         {
-            await NoteStorage.AddOrUpdateNoteAsync(currentNote);
+            saveProgressBar.Visibility = Visibility.Visible;
+
+            var saveTask = NoteStorage.AddOrUpdateNoteAsync(currentNote);
+
+            await saveTask.Suppress(AppResources.UnableToSaveNote);
+
+            saveProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void deleteButton_Click(object sender, EventArgs e)
         {
+            if (ReferenceEquals(currentNote, null))
+            {
+                return;
+            }
+
             await NoteStorage.RemoveNotesAsync(currentNote.Identity);
         }
 
