@@ -127,6 +127,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SDN.Shared\SDN.Shared.csproj">
+      <Project>{b8be07f1-8589-4660-8329-ecabac51ee40}</Project>
+      <Name>SDN.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SDN.WP\SDN.WP.csproj">
       <Project>{0c0c30f8-eea2-407a-93dd-bddf0763c18f}</Project>
       <Name>SDN.WP</Name>

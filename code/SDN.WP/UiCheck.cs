@@ -39,7 +39,7 @@ namespace SDN.WP
 
             var userMessage = string.Format(message, args);
             var resultMessage = userMessage + Environment.NewLine + "Upper stack:" + Environment.NewLine + StackTraceHelper.GetCurrentStackTrace();
-
+            
             if (Debugger.IsAttached)
             {
                 Debugger.Break();

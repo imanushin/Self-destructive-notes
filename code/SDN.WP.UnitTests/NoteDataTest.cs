@@ -22,8 +22,8 @@ namespace SDN.WP.UnitTests
 
             Assert.AreEqual(noteData.Identity, deserialize.Identity);
             Assert.AreEqual(noteData.RemoveAtUtc, deserialize.RemoveAtUtc);
-            Assert.AreEqual(noteData.Snapshots.Count, deserialize.Snapshots.Count);
-            Assert.AreEqual(noteData.Images.Count, deserialize.Images.Count);
+            Assert.AreEqual(noteData.Snapshots, deserialize.Snapshots);
+            Assert.AreEqual(noteData.Images, deserialize.Images);
         }
     }
 }

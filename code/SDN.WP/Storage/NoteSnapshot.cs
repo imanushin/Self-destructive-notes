@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDN.Shared.Collections;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace SDN.WP.Storage
 {
     public sealed class NoteSnapshot
     {
-        public NoteSnapshot(string text, string title, ReadOnlyCollection<Guid> images)
+        public NoteSnapshot(string text, string title, ImmutableList<Guid> images)
         {
             Text = text;
             Title = title;
@@ -28,7 +29,7 @@ namespace SDN.WP.Storage
             private set;
         }
 
-        public ReadOnlyCollection<Guid> Images
+        public ImmutableList<Guid> Images
         {
             get;
             private set;

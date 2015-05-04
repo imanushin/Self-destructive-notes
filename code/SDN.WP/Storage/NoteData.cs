@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using SDN.Shared.Collections;
 using SDN.WP.Resources;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace SDN.WP.Storage
 {
     public sealed class NoteData
     {
-        public NoteData(Guid identity, DateTime removeAtUtc, ReadOnlyCollection<NoteSnapshot> snapshots, ReadOnlyDictionary<Guid, byte[]> images)
+        public NoteData(Guid identity, DateTime removeAtUtc, ImmutableList<NoteSnapshot> snapshots, ImmutableDictionary<Guid, byte[]> images)
         {
             Identity = identity;
             RemoveAtUtc = removeAtUtc;
@@ -25,7 +22,7 @@ namespace SDN.WP.Storage
         {
             Identity = previous.Identity;
             RemoveAtUtc = newRemovingTime;
-            Snapshots = new ReadOnlyCollection<NoteSnapshot>(previous.Snapshots.Concat(new[] { newData }).ToArray());
+            Snapshots = new ImmutableList<NoteSnapshot>(previous.Snapshots.Concat(new[] { newData }).ToArray());
 
             var images = previous.Images.ToDictionary(kv => kv.Key, kv => kv.Value);
 
@@ -34,7 +31,7 @@ namespace SDN.WP.Storage
                 images[newImage.Key] = newImage.Value;
             }
 
-            Images = new ReadOnlyDictionary<Guid, byte[]>(images);
+            Images = new ImmutableDictionary<Guid, byte[]>(images);
         }
 
         public Guid Identity
@@ -49,13 +46,13 @@ namespace SDN.WP.Storage
             private set;
         }
 
-        public ReadOnlyCollection<NoteSnapshot> Snapshots
+        public ImmutableList<NoteSnapshot> Snapshots
         {
             get;
             private set;
         }
 
-        public ReadOnlyDictionary<Guid, byte[]> Images
+        public ImmutableDictionary<Guid, byte[]> Images
         {
             get;
             private set;
@@ -85,13 +82,13 @@ namespace SDN.WP.Storage
 
         public static NoteData CreateNew()
         {
-            var emptySnapshot = new NoteSnapshot(string.Empty, AppResources.DefaultTitle, new ReadOnlyCollection<Guid>(new List<Guid>()));
+            var emptySnapshot = new NoteSnapshot(string.Empty, AppResources.DefaultTitle, new ImmutableList<Guid>(new List<Guid>()));
 
             return new NoteData(
                     Guid.NewGuid(),
                     DateTime.UtcNow.AddDays(1),
-                    new ReadOnlyCollection<NoteSnapshot>(new[] { emptySnapshot }),
-                    new ReadOnlyDictionary<Guid, byte[]>(new Dictionary<Guid, byte[]>()));
+                    new ImmutableList<NoteSnapshot>(new[] { emptySnapshot }),
+                    new ImmutableDictionary<Guid, byte[]>(new Dictionary<Guid, byte[]>()));
         }
     }
 }
