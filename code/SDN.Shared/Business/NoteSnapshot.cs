@@ -1,12 +1,7 @@
-﻿using SDN.Shared.Collections;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using SDN.Shared.Collections;
 
-namespace SDN.WP.Storage
+namespace SDN.Shared.Business
 {
     public sealed class NoteSnapshot
     {

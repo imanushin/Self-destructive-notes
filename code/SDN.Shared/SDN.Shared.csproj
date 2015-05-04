@@ -35,6 +35,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseReadOnlyObject.cs" />
+    <Compile Include="Business\NoteData.cs" />
+    <Compile Include="Business\NoteSnapshot.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />

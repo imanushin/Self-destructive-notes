@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using SDN.Shared.Business;
 using SDN.WP.Resources;
 using SDN.WP.Storage;
 
@@ -70,7 +71,7 @@ namespace SDN.WP
 
             if (ReferenceEquals(newNote, null))
             {
-                newNote = NoteData.CreateNew();
+                newNote = NoteData.CreateNew(AppResources.DefaultTitle);
             }
 
             currentNote = newNote;

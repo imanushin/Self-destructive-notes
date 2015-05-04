@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using SDN.WP.Storage;
+﻿using NUnit.Framework;
+using SDN.Shared.Business;
 
-namespace SDN.WP.UnitTests
+namespace SDN.Shared.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NoteDataTest
     {
-        [TestMethod]
+        [Test]
         public void SerializeDeserializeTest()
         {
-            var noteData = NoteData.CreateNew();
+            var noteData = NoteData.CreateNew("123");
 
             var serialized = noteData.Serilize();
 

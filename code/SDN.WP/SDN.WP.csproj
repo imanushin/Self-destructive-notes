@@ -109,8 +109,6 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="StackTraceHelper.cs" />
-    <Compile Include="Storage\NoteData.cs" />
-    <Compile Include="Storage\NoteSnapshot.cs" />
     <Compile Include="Storage\NoteStorage.cs" />
     <Compile Include="Storage\XamlNoteStorage.cs" />
   </ItemGroup>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SDN.Shared.Collections;
-using SDN.WP.Resources;
-using System.Runtime.Serialization;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using SDN.Shared.Collections;
 
-namespace SDN.WP.Storage
+namespace SDN.Shared.Business
 {
     public sealed class NoteData
     {
@@ -80,9 +79,9 @@ namespace SDN.WP.Storage
             }
         }
 
-        public static NoteData CreateNew()
+        public static NoteData CreateNew(string defaultTitle)
         {
-            var emptySnapshot = new NoteSnapshot(string.Empty, AppResources.DefaultTitle, new ImmutableList<Guid>(new List<Guid>()));
+            var emptySnapshot = new NoteSnapshot(string.Empty, defaultTitle, new ImmutableList<Guid>(new List<Guid>()));
 
             return new NoteData(
                     Guid.NewGuid(),

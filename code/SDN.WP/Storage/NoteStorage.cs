@@ -15,6 +15,7 @@ using Windows.Storage;
 using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using Microsoft.Phone.Reactive;
+using SDN.Shared.Business;
 using Buffer = Windows.Storage.Streams.Buffer;
 
 namespace SDN.WP.Storage
