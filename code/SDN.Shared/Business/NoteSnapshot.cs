@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using SDN.Shared.Collections;
 
 namespace SDN.Shared.Business
 {
-    public sealed class NoteSnapshot
+    [DataContract]
+    public sealed class NoteSnapshot : BaseReadOnlyObject
     {
         public NoteSnapshot(string text, string title, ImmutableList<Guid> images)
         {
@@ -12,22 +15,32 @@ namespace SDN.Shared.Business
             Images = images;
         }
 
+        [DataMember]
         public string Text
         {
             get;
             private set;
         }
 
+        [DataMember]
         public string Title
         {
             get;
             private set;
         }
 
+        [DataMember]
         public ImmutableList<Guid> Images
         {
             get;
             private set;
+        }
+
+        protected override IEnumerable<object> GetInnerObjects()
+        {
+            yield return Text;
+            yield return Title;
+            yield return Images;
         }
     }
 }

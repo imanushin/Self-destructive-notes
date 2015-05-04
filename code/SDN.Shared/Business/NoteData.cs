@@ -7,7 +7,8 @@ using SDN.Shared.Collections;
 
 namespace SDN.Shared.Business
 {
-    public sealed class NoteData
+    [DataContract(IsReference = true)]
+    public sealed class NoteData : BaseReadOnlyObject
     {
         public NoteData(Guid identity, DateTime removeAtUtc, ImmutableList<NoteSnapshot> snapshots, ImmutableDictionary<Guid, byte[]> images)
         {
@@ -33,24 +34,28 @@ namespace SDN.Shared.Business
             Images = new ImmutableDictionary<Guid, byte[]>(images);
         }
 
+        [DataMember]
         public Guid Identity
         {
             get;
             private set;
         }
 
+        [DataMember]
         public DateTime RemoveAtUtc
         {
             get;
             private set;
         }
 
+        [DataMember]
         public ImmutableList<NoteSnapshot> Snapshots
         {
             get;
             private set;
         }
 
+        [DataMember]
         public ImmutableDictionary<Guid, byte[]> Images
         {
             get;
@@ -88,6 +93,14 @@ namespace SDN.Shared.Business
                     DateTime.UtcNow.AddDays(1),
                     new ImmutableList<NoteSnapshot>(new[] { emptySnapshot }),
                     new ImmutableDictionary<Guid, byte[]>(new Dictionary<Guid, byte[]>()));
+        }
+
+        protected override IEnumerable<object> GetInnerObjects()
+        {
+            yield return Identity;
+            yield return RemoveAtUtc;
+            yield return Snapshots;
+            yield return Images;
         }
     }
 }
