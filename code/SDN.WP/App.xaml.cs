@@ -16,6 +16,8 @@ namespace SDN.WP
 {
     public partial class App : Application
     {
+        private static readonly NoteStorage noteStorage = new NoteStorage();
+        
         private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private static TaskScheduler uiScheduler;
@@ -70,6 +72,14 @@ namespace SDN.WP
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+        }
+
+        public static NoteStorage NoteStorage
+        {
+            get
+            {
+                return noteStorage;
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)

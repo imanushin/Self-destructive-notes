@@ -27,7 +27,7 @@ namespace SDN.WP
             // Sample code to localize the ApplicationBar
             BuildLocalizedApplicationBar();
 
-            NoteStorage.UpdateNotes();
+            App.NoteStorage.UpdateNotes();
         }
 
         // Sample code for building a localized ApplicationBar

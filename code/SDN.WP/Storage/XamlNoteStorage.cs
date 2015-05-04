@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using SDN.Shared.Business;
 
 namespace SDN.WP.Storage
@@ -14,7 +15,7 @@ namespace SDN.WP.Storage
         {
             get
             {
-                return NoteStorage.ActualNotes;
+                return App.NoteStorage.ActualNotes;
             }
         }
     }

@@ -22,6 +22,9 @@ namespace SDN.WP
             }
             catch (Exception ex)
             {
+#if DEBUG
+                messageText = messageText + ex;
+#endif
                 BackroundTasks.ReportErrorAsync(null, messageText, ex);
 
                 MessageBox.Show(messageText, AppResources.Error, MessageBoxButton.OK);

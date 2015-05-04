@@ -89,7 +89,7 @@ namespace SDN.WP
         {
             saveProgressBar.Visibility = Visibility.Visible;
 
-            var saveTask = NoteStorage.AddOrUpdateNoteAsync(currentNote);
+            var saveTask = App.NoteStorage.AddOrUpdateNoteAsync(currentNote);
 
             await saveTask.Suppress(AppResources.UnableToSaveNote);
 
@@ -103,7 +103,7 @@ namespace SDN.WP
                 return;
             }
 
-            await NoteStorage.RemoveNotesAsync(currentNote.Identity);
+            await App.NoteStorage.RemoveNotesAsync(currentNote.Identity);
         }
 
         private void OnLoadedEvent(object sender, RoutedEventArgs e)
