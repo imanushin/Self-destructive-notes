@@ -13,7 +13,7 @@ namespace SDN.Shared.UnitTests
         {
             var input = new[] { 1, 2, 3 };
 
-            var output = input.ToReadOnlyList();
+            var output = input.ToImmutableList();
 
             CollectionAssert.AreEqual(output, input);
         }
@@ -37,9 +37,9 @@ namespace SDN.Shared.UnitTests
             const int newElement = 4;
             var otherElements = Enumerable.Range(5, 9);
 
-            var result = original.UnionWith(newElement, otherElements.ToArray()).ToReadOnlyList();
+            var result = original.UnionWith(newElement, otherElements.ToArray()).ToImmutableList();
 
-            Assert.AreEqual(Enumerable.Range(0, 14).ToReadOnlyList(), result);
+            Assert.AreEqual(Enumerable.Range(0, 14).ToImmutableList(), result);
 
         }
     }

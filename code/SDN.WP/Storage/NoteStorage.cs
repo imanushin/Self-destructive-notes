@@ -14,7 +14,9 @@ using Windows.Phone.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Search;
 using Windows.Storage.Streams;
+using JetBrains.Annotations;
 using Microsoft.Phone.Reactive;
+using SDN.Shared;
 using SDN.Shared.Business;
 using Buffer = Windows.Storage.Streams.Buffer;
 
@@ -22,6 +24,7 @@ namespace SDN.WP.Storage
 {
     public sealed class NoteStorage
     {
+        private readonly Func<Action, Task> createOnUiThreadAction;
         private const string dataFolderName = "notes";
 
         private readonly ObservableCollection<NoteData> actualNotes = CreateCollection();
@@ -33,6 +36,13 @@ namespace SDN.WP.Storage
             result.CollectionChanged += (sender, args) => UiCheck.IsUiThread();
 
             return result;
+        }
+
+        public NoteStorage([NotNull] Func<Action, Task> createOnUiThreadAction)
+        {
+            Check.ObjectIsNotNull(createOnUiThreadAction, "createOnUiThreadAction");
+
+            this.createOnUiThreadAction = createOnUiThreadAction;
         }
 
         private async Task ReadAllNotesAsync()
@@ -51,7 +61,7 @@ namespace SDN.WP.Storage
 
             notesToRemove.ForEach(n => notes.Remove(n));
 
-            await App.CreateInUiThread(() => SetNotes(notes));
+            await createOnUiThreadAction(() => SetNotes(notes));
         }
 
         private void SetNotes(HashSet<NoteData> notes)
@@ -144,7 +154,7 @@ namespace SDN.WP.Storage
         public async Task AddOrUpdateNoteAsync(NoteData note)
         {
             var saveTask = Task.Run(() => SaveNoteAsync(note));
-            var updateCollectionTask = App.CreateInUiThread(() => ReAddNote(note));
+            var updateCollectionTask = createOnUiThreadAction(() => ReAddNote(note));
 
             await Task.WhenAll(saveTask, updateCollectionTask);
         }

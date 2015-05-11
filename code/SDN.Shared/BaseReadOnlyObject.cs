@@ -155,7 +155,7 @@ namespace SDN.Shared
         protected virtual int CalculateHashCode()
         {
             if (innerObjects == null)
-                innerObjects =  GetInnerObjects().ToReadOnlyList();
+                innerObjects =  GetInnerObjects().ToImmutableList();
 
             return innerObjects.Aggregate(0, (current, innerObject) => current ^ GetHashCodeOfMember(innerObject));
         }
@@ -172,12 +172,12 @@ namespace SDN.Shared
         protected virtual bool CheckEquality(BaseReadOnlyObject target)
         {
             if (innerObjects == null)
-                innerObjects = GetInnerObjects().ToReadOnlyList();
+                innerObjects = GetInnerObjects().ToImmutableList();
 
             var other = target;
 
             if (other.innerObjects == null)
-                other.innerObjects = other.GetInnerObjects().ToReadOnlyList();
+                other.innerObjects = other.GetInnerObjects().ToImmutableList();
 
             if (innerObjects.Count != other.innerObjects.Count)
                 return false;

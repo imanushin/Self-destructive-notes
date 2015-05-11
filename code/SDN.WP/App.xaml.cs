@@ -16,13 +16,13 @@ namespace SDN.WP
 {
     public partial class App : Application
     {
-        private static readonly NoteStorage noteStorage = new NoteStorage();
+        private static readonly NoteStorage noteStorage = new NoteStorage(CreateInUiThread);
         
         private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private static TaskScheduler uiScheduler;
 
-        internal static Task CreateInUiThread(Action action)
+        private static Task CreateInUiThread(Action action)
         {
             return Task.Factory.StartNew(action, tokenSource.Token, TaskCreationOptions.None, uiScheduler);
         }

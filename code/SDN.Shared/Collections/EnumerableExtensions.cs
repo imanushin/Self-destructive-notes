@@ -16,7 +16,7 @@ namespace SDN.Shared.Collections
         /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
         /// <param name="source">The current enumerable.</param>
         /// <returns>ImmutableList that contains the same elements as the current enumerable.</returns>
-        public static ImmutableList<T> ToReadOnlyList<T>(this IEnumerable<T> source)
+        public static ImmutableList<T> ToImmutableList<T>(this IEnumerable<T> source)
         {
             Check.ObjectIsNotNull(source, "source");
 
