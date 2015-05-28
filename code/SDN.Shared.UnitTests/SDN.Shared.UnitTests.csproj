@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="DictionaryExtensionsTest.cs" />
     <Compile Include="EnumerableExtensionsTest.cs" />
-    <Compile Include="NoteDataTest.cs" />
+    <Compile Include="InnerSerializerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImmutableDictionaryTest.cs" />
   </ItemGroup>

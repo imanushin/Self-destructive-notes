@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml;
+using JetBrains.Annotations;
 using SDN.Shared.Collections;
 
 namespace SDN.Shared.Business
 {
-    [DataContract(IsReference = true)]
     public sealed class NoteData : BaseReadOnlyObject
     {
+        private static readonly int guidSize = Guid.NewGuid().ToByteArray().Length;
+
         public NoteData(Guid identity, DateTime removeAtUtc, ImmutableList<NoteSnapshot> snapshots, ImmutableDictionary<Guid, byte[]> images)
         {
             Identity = identity;
@@ -34,54 +38,28 @@ namespace SDN.Shared.Business
             Images = new ImmutableDictionary<Guid, byte[]>(images);
         }
 
-        [DataMember]
         public Guid Identity
         {
             get;
             private set;
         }
 
-        [DataMember]
         public DateTime RemoveAtUtc
         {
             get;
             private set;
         }
 
-        [DataMember]
         public ImmutableList<NoteSnapshot> Snapshots
         {
             get;
             private set;
         }
 
-        [DataMember]
         public ImmutableDictionary<Guid, byte[]> Images
         {
             get;
             private set;
-        }
-
-        public string Serilize()
-        {
-            var serializer = new DataContractSerializer(typeof(NoteData));
-
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, this);
-
-                return Convert.ToBase64String(stream.ToArray());
-            }
-        }
-
-        public static NoteData Deserialize(string arg)
-        {
-            var serializer = new DataContractSerializer(typeof(NoteData));
-
-            using (var stream = new MemoryStream(Convert.FromBase64String(arg)))
-            {
-                return (NoteData)serializer.ReadObject(stream);
-            }
         }
 
         public static NoteData CreateNew(string defaultTitle)

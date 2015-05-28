@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml;
 using JetBrains.Annotations;
 using SDN.Shared.Collections;
 
@@ -46,28 +47,6 @@ namespace SDN.Shared.Business
             yield return Text;
             yield return Title;
             yield return Images;
-        }
-
-        public void Serialize([NotNull] BinaryWriter writer)
-        {
-            Check.ObjectIsNotNull(writer, "writer");
-
-            writer.Write(Text);
-            writer.Write(Title);
-            writer.Write(Images.Count);
-            Images.ForEach(g => writer.Write(g.ToByteArray()));
-        }
-
-        public static NoteSnapshot Deserialize([NotNull] BinaryReader reader)
-        {
-            Check.ObjectIsNotNull(reader, "reader");
-
-            var text = reader.ReadString();
-            var title = reader.ReadString();
-            var imagesCount = reader.ReadInt32();
-            var images = Enumerable.Range(0, imagesCount).Select(i => new Guid(reader.ReadBytes(guidSize))).ToImmutableList();
-
-            return new NoteSnapshot(text, title, images);
         }
     }
 }

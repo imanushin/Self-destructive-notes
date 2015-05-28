@@ -34,8 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Base64Helper.cs" />
     <Compile Include="BaseReadOnlyObject.cs" />
+    <Compile Include="Business\NoteDataSerialized.cs" />
     <Compile Include="Business\NoteData.cs" />
+    <Compile Include="Business\NoteSnapshotSerialized.cs" />
     <Compile Include="Business\NoteSnapshot.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="Collections\ImmutableList.cs" />
     <Compile Include="Collections\ImmutableSet.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="InnerSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

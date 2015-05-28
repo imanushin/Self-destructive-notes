@@ -51,7 +51,7 @@ namespace SDN.WP.Storage
 
             var content = await Task.Run(() => GetAllFiles());
 
-            var notes = new HashSet<NoteData>(content.Select(NoteData.Deserialize));
+            var notes = new HashSet<NoteData>(content.Select(nd => InnerSerializer.Deserialize(nd)));
 
             var currentTimeUtc = DateTime.UtcNow;
 
@@ -87,7 +87,7 @@ namespace SDN.WP.Storage
             }
         }
 
-        private async Task<string[]> GetAllFiles()
+        private async Task<byte[][]> GetAllFiles()
         {
             UiCheck.IsBackgroundThread();
 
@@ -115,16 +115,17 @@ namespace SDN.WP.Storage
             return await storageFolder.CreateFolderAsync(dataFolderName, CreationCollisionOption.OpenIfExists);
         }
 
-        private async Task<string> GetFileContent(StorageFile file)
+        private async Task<byte[]> GetFileContent(StorageFile file)
         {
             UiCheck.IsBackgroundThread();
 
             using (var fileStream = await file.OpenStreamForReadAsync())
             {
-                using (var streamReader = new StreamReader(fileStream))
-                {
-                    return streamReader.ReadToEnd();
-                }
+                var length  = (int) fileStream.Length;
+                var buffer = new byte[length];
+                await fileStream.ReadAsync(buffer, 0, length);
+
+                return buffer;
             }
         }
 
@@ -189,12 +190,9 @@ namespace SDN.WP.Storage
 
             using (var writeStream = await targetFile.OpenStreamForWriteAsync())
             {
-                using (var writer = new StreamWriter(writeStream))
-                {
-                    var serializedNote = note.Serilize();
+                var data = InnerSerializer.Serialize(note);
 
-                    writer.Write(serializedNote);
-                }
+                await writeStream.WriteAsync(data, 0, data.Length);
             }
         }
 
