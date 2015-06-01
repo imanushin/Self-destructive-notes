@@ -8,46 +8,44 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Automation;
-using Windows.Phone.ApplicationModel;
 using Windows.Storage;
-using Windows.Storage.Search;
-using Windows.Storage.Streams;
 using JetBrains.Annotations;
-using Microsoft.Phone.Reactive;
 using SDN.Shared;
 using SDN.Shared.Business;
-using Buffer = Windows.Storage.Streams.Buffer;
 
 namespace SDN.WP.Storage
 {
     public sealed class NoteStorage
     {
         private readonly Func<Action, Task> createOnUiThreadAction;
+        private readonly IUiCheck uiCheck;
         private const string dataFolderName = "notes";
 
-        private readonly ObservableCollection<NoteData> actualNotes = CreateCollection();
+        private readonly ObservableCollection<NoteData> actualNotes;
 
-        private static ObservableCollection<NoteData> CreateCollection()
+        private static ObservableCollection<NoteData> CreateCollection([NotNull] IUiCheck uiCheck)
         {
             var result = new ObservableCollection<NoteData>();
 
-            result.CollectionChanged += (sender, args) => UiCheck.IsUiThread();
+            result.CollectionChanged += (sender, args) => uiCheck.IsUiThread();
 
             return result;
         }
 
-        public NoteStorage([NotNull] Func<Action, Task> createOnUiThreadAction)
+        public NoteStorage([NotNull] Func<Action, Task> createOnUiThreadAction, [NotNull] IUiCheck uiCheck)
         {
             Check.ObjectIsNotNull(createOnUiThreadAction, "createOnUiThreadAction");
+            Check.ObjectIsNotNull(uiCheck, "uiCheck");
 
             this.createOnUiThreadAction = createOnUiThreadAction;
+            this.uiCheck = uiCheck;
+
+            actualNotes = CreateCollection(uiCheck);
         }
 
         private async Task ReadAllNotesAsync()
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             var content = await Task.Run(() => GetAllFiles());
 
@@ -66,7 +64,7 @@ namespace SDN.WP.Storage
 
         private void SetNotes(HashSet<NoteData> notes)
         {
-            UiCheck.IsUiThread();
+            uiCheck.IsUiThread();
 
             var notesToRemove = actualNotes.Except(notes).ToList();
 
@@ -89,7 +87,7 @@ namespace SDN.WP.Storage
 
         private async Task<byte[][]> GetAllFiles()
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 
@@ -101,14 +99,14 @@ namespace SDN.WP.Storage
 
             Task.WaitAll(getContentTasks);
 
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             return getContentTasks.Select(t => t.Result).ToArray();
         }
 
         private async Task<StorageFolder> GetStorageFolderAsync()
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             var storageFolder = ApplicationData.Current.LocalFolder;
 
@@ -117,11 +115,11 @@ namespace SDN.WP.Storage
 
         private async Task<byte[]> GetFileContent(StorageFile file)
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             using (var fileStream = await file.OpenStreamForReadAsync())
             {
-                var length  = (int) fileStream.Length;
+                var length = (int)fileStream.Length;
                 var buffer = new byte[length];
                 await fileStream.ReadAsync(buffer, 0, length);
 
@@ -139,7 +137,7 @@ namespace SDN.WP.Storage
 
         public async Task RemoveNotesAsync(params Guid[] noteIdentities)
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 
@@ -162,16 +160,18 @@ namespace SDN.WP.Storage
 
         private void ReAddNote(NoteData note)
         {
-            UiCheck.IsUiThread();
+            uiCheck.IsUiThread();
 
-            var indexOfExisting = actualNotes.SkipWhile(n => n.Identity != note.Identity).Count() - 1;
+            var exists = actualNotes.Contains(note, NoteIdentityComparer.Instance);
 
-            if (indexOfExisting + 1 >= actualNotes.Count)
+            if (!exists)
             {
                 actualNotes.Add(note);
             }
             else
             {
+                var indexOfExisting = actualNotes.SkipWhile(n => !NoteIdentityComparer.Instance.Equals(n, note)).Count() - 1;
+
                 UiCheck.True(actualNotes[indexOfExisting].Identity == note.Identity, "Trying to replace note {0} to note {1}", actualNotes[indexOfExisting].Identity, note.Identity);
 
                 actualNotes[indexOfExisting] = note;
@@ -180,7 +180,7 @@ namespace SDN.WP.Storage
 
         private async Task SaveNoteAsync(NoteData note)
         {
-            UiCheck.IsBackgroundThread();
+            uiCheck.IsBackgroundThread();
 
             var folder = await GetStorageFolderAsync();
 
@@ -204,6 +204,41 @@ namespace SDN.WP.Storage
         public async Task UpdateNotes()
         {
             await ReadAllNotesAsync();
+        }
+
+        private sealed class NoteIdentityComparer : IEqualityComparer<NoteData>
+        {
+            public static readonly NoteIdentityComparer Instance = new NoteIdentityComparer();
+
+            private NoteIdentityComparer()
+            {
+            }
+
+            public bool Equals(NoteData x, NoteData y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return x.Identity == y.Identity;
+
+            }
+
+            public int GetHashCode(NoteData obj)
+            {
+                if (ReferenceEquals(obj, null))
+                {
+                    return 0;
+                }
+
+                return obj.Identity.GetHashCode();
+            }
         }
     }
 }

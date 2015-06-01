@@ -51,6 +51,7 @@
     <Compile Include="Collections\ImmutableSet.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="InnerSerializer.cs" />
+    <Compile Include="IUiCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,21 +8,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using JetBrains.Annotations;
+using SDN.Shared;
 
 namespace SDN.WP
 {
-    internal static class UiCheck
+    internal sealed class UiCheck : IUiCheck
     {
-        [Conditional("DEBUG")]
-        public static void IsUiThread()
+        public void IsUiThread()
         {
             var isUiThread = Deployment.Current.Dispatcher.CheckAccess();
 
             True(isUiThread, "Current thread ({0}) is not UI thread", Thread.CurrentThread.ManagedThreadId);
         }
 
-        [Conditional("DEBUG")]
-        public static void IsBackgroundThread()
+        public void IsBackgroundThread()
         {
             var isUiThread = Thread.CurrentThread.IsBackground;
 

@@ -94,6 +94,7 @@ namespace SDN.WP
             await saveTask.Suppress(AppResources.UnableToSaveNote);
 
             saveProgressBar.Visibility = Visibility.Collapsed;
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
         private async void deleteButton_Click(object sender, EventArgs e)

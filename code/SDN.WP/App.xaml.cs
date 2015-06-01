@@ -16,7 +16,8 @@ namespace SDN.WP
 {
     public partial class App : Application
     {
-        private static readonly NoteStorage noteStorage = new NoteStorage(CreateInUiThread);
+        private static readonly UiCheck uiCheck = new UiCheck();
+        private static readonly NoteStorage noteStorage = new NoteStorage(CreateInUiThread, uiCheck);
         
         private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
