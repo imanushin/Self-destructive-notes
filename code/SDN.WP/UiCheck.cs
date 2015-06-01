@@ -29,6 +29,7 @@ namespace SDN.WP
         }
 
         [Conditional("DEBUG")]
+        [StringFormatMethod("message")]
         public static void True(bool value, string message, params object[] args)
         {
             if (value)

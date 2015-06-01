@@ -30,7 +30,13 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1">
-            <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}"/>
+            <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate d:DataContext="NoteData">
+                        <TextBlock Text="{Binding CurrentSnapshot.Title}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
     </Grid>

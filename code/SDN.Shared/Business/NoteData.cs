@@ -16,26 +16,16 @@ namespace SDN.Shared.Business
 
         public NoteData(Guid identity, DateTime removeAtUtc, ImmutableList<NoteSnapshot> snapshots, ImmutableDictionary<Guid, byte[]> images)
         {
+            Check.ObjectIsNotNull(snapshots, "snapshots");
+
             Identity = identity;
             RemoveAtUtc = removeAtUtc;
             Snapshots = snapshots;
             Images = images;
-        }
 
-        public NoteData(NoteData previous, DateTime newRemovingTime, NoteSnapshot newData, IDictionary<Guid, byte[]> newImages)
-        {
-            Identity = previous.Identity;
-            RemoveAtUtc = newRemovingTime;
-            Snapshots = new ImmutableList<NoteSnapshot>(previous.Snapshots.Concat(new[] { newData }).ToArray());
+            CurrentSnapshot = snapshots.LastOrDefault();
 
-            var images = previous.Images.ToDictionary(kv => kv.Key, kv => kv.Value);
-
-            foreach (var newImage in newImages)
-            {
-                images[newImage.Key] = newImage.Value;
-            }
-
-            Images = new ImmutableDictionary<Guid, byte[]>(images);
+            Check.ObjectIsNotNull(CurrentSnapshot);
         }
 
         public Guid Identity
@@ -57,6 +47,12 @@ namespace SDN.Shared.Business
         }
 
         public ImmutableDictionary<Guid, byte[]> Images
+        {
+            get;
+            private set;
+        }
+
+        public NoteSnapshot CurrentSnapshot
         {
             get;
             private set;
