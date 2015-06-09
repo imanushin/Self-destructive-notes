@@ -23,6 +23,8 @@ namespace SDN.Shared.Business
             Snapshots = snapshots;
             Images = images;
 
+            RemoveAtDateString = RemoveAtUtc.ToString("d");
+            RemoveAtTimeString = RemoveAtUtc.ToString("t");
             CurrentSnapshot = snapshots.LastOrDefault();
 
             Check.ObjectIsNotNull(CurrentSnapshot);
@@ -35,6 +37,18 @@ namespace SDN.Shared.Business
         }
 
         public DateTime RemoveAtUtc
+        {
+            get;
+            private set;
+        }
+
+        public string RemoveAtDateString
+        {
+            get;
+            private set;
+        }
+
+        public string RemoveAtTimeString
         {
             get;
             private set;

@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -55,6 +56,11 @@ namespace SDN.WP
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void OnElementTap(object sender, GestureEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid Background="Transparent">
+    <Grid Background="Transparent"  HorizontalAlignment="Stretch" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -29,11 +29,48 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid Grid.Row="1">
-            <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}">
+        <Grid Grid.Row="1"  HorizontalAlignment="Stretch" >
+            <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}" 
+                     HorizontalContentAlignment="Stretch"
+                     HorizontalAlignment="Stretch" 
+                     VerticalAlignment="Stretch">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate d:DataContext="NoteData">
-                        <TextBlock Text="{Binding CurrentSnapshot.Title}"/>
+                        <Grid Margin="4" Tap="OnElementTap" Tag="{Binding}" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Border Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                                <TextBlock Text="{Binding CurrentSnapshot.Title}" 
+                                           Margin="2" 
+                                           FontSize="{StaticResource PhoneFontSizeLarge}"
+                                           TextTrimming="WordEllipsis"/>
+                            </Border>
+                            
+                            <TextBlock Text="{Binding RemoveAtDateString}" 
+                                Grid.Column="1" 
+                                Grid.Row="0"
+                                Margin="1" 
+                                FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+
+                            <TextBlock Text="{Binding RemoveAtTimeString}" 
+                                       Grid.Column="1"
+                                       Grid.Row="1"
+                                       Margin="1"
+                                       FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
