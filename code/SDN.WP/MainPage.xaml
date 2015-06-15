@@ -15,21 +15,22 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid Background="Transparent"  HorizontalAlignment="Stretch" >
+    <Grid Background="Transparent" HorizontalAlignment="Stretch" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="{Binding Path=LocalizedResources.MainPageTitle, Source={StaticResource LocalizedStrings}}" 
-                       Style="{StaticResource PhoneTextNormalStyle}" 
-                       Margin="12,0"/>
-        </StackPanel>
-
+        <TextBlock HorizontalAlignment="Left"
+                   Text="{Binding Path=LocalizedResources.MainPageTitle, Source={StaticResource LocalizedStrings}}"/>
+        
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Right"
+                   Text="{Binding Path=LocalizedResources.Cleanup, Source={StaticResource LocalizedStrings}}"/>
+        
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1"  HorizontalAlignment="Stretch" >
+            
             <ListBox ItemsSource="{Binding Path=ActualNotes, Source={StaticResource NoteStorage}}" 
                      HorizontalContentAlignment="Stretch"
                      HorizontalAlignment="Stretch" 

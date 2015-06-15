@@ -185,4 +185,7 @@
   <data name="UnableToSaveNote" xml:space="preserve">
     <value>Unable to save note. Please try to do it again or restart the application. We have already received error details and will start analysing soon.</value>
   </data>
+  <data name="Cleanup" xml:space="preserve">
+    <value>Cleanup</value>
+  </data>
 </root>

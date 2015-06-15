@@ -88,6 +88,15 @@ namespace SDN.WP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cleanup.
+        /// </summary>
+        public static string Cleanup {
+            get {
+                return ResourceManager.GetString("Cleanup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create note.
         /// </summary>
         public static string CreateNote {
